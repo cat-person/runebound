@@ -4,22 +4,19 @@ const primary string = "primary"
 const secondary string = "secondary"
 
 type Hero struct {
-	runes           []Rune
-	armor           Armor
-	weapon          Weapon
-	secondaryWeapon Weapon
-	helm            Helm
-	book            Book
+	runes  []Rune
+	health int
+	// armor           Armor
+	// weapon          Weapon
+	// secondaryWeapon Weapon
+	// helm            Helm
+	// book            Book
 }
 
 type Armor struct {
 }
 
 type Helm struct {
-}
-
-type Weapon struct {
-	weaponType string
 }
 
 type Book struct {
@@ -32,4 +29,24 @@ func (hero Hero) castRunes() []string {
 		result[idx] = element.cast()
 	}
 	return result
+}
+
+func getStandard() Hero {
+	return Hero{
+		runes: []Rune{
+			Rune{
+				head:  "",
+				tails: "",
+			},
+			Rune{
+				head:  "",
+				tails: "",
+			},
+			Rune{
+				head:  "",
+				tails: "",
+			},
+		},
+		health: 0,
+	}
 }

@@ -2,9 +2,23 @@ package main
 
 import "math/rand"
 
+type RuneType uint16
+
+const (
+	Attack RuneType = iota
+	Defense
+	Magic
+	Trick
+)
+
 type Rune struct {
 	head  string
 	tails string
+}
+
+type RuneSide struct {
+	number   int
+	runeType RuneType
 }
 
 func (rune Rune) cast() string {

@@ -1,11 +1,9 @@
 package main
 
 type Monster struct {
-	runes           []Rune
-	health          int
-	attack          int
-	secondaryAttack int
-	abilities       []Ability
+	runes  []Rune
+	level  uint
+	health int
 }
 
 func (monster Monster) castRunes() []string {
@@ -14,4 +12,19 @@ func (monster Monster) castRunes() []string {
 		result[idx] = element.cast()
 	}
 	return result
+}
+
+var werewolf = Monster{
+	[]Rune{Rune{
+		head:  "",
+		tails: "",
+	}, Rune{
+		head:  "",
+		tails: "",
+	}, Rune{
+		head:  "",
+		tails: "",
+	}},
+	1,
+	9,
 }
