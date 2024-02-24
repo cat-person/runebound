@@ -1,52 +1,32 @@
 package main
 
-const primary string = "primary"
-const secondary string = "secondary"
+import (
+	"encoding/json"
+)
 
 type Hero struct {
-	runes  []Rune
-	health int
-	// armor           Armor
-	// weapon          Weapon
-	// secondaryWeapon Weapon
-	// helm            Helm
-	// book            Book
+	Name       string
+	Stats      map[string]int
+	Actions    []ActionName
+	Runes      []RuneName
+	Equipement map[EquipmentType]Equipment
 }
 
-type Armor struct {
-}
-
-type Helm struct {
-}
-
-type Book struct {
-	spells []string
-}
-
-func (hero Hero) castRunes() []string {
-	result := make([]string, len(hero.runes))
-	for idx, element := range hero.runes {
-		result[idx] = element.cast()
-	}
-	return result
-}
-
-func getStandard() Hero {
+func getHero(name string) Hero {
 	return Hero{
-		runes: []Rune{
-			Rune{
-				head:  "",
-				tails: "",
-			},
-			Rune{
-				head:  "",
-				tails: "",
-			},
-			Rune{
-				head:  "",
-				tails: "",
-			},
-		},
-		health: 0,
+		Name:       name,
+		Stats:      map[string]int{"health": 5, "armor": 1},
+		Actions:    []ActionName{Punch},
+		Runes:      Runes{Copper, Red, Green},
+		Equipement: map[EquipmentType]Equipment{},
+	}
+}
+
+func (hero Hero) String() string {
+	result, err := json.MarshalIndent(hero, "", "  ")
+	if err == nil {
+		return string(result)
+	} else {
+		return err.Error()
 	}
 }
