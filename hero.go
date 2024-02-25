@@ -30,3 +30,13 @@ func (hero Hero) String() string {
 		return err.Error()
 	}
 }
+
+func (hero Hero) getActions() map[ActionName][]RuneSide {
+	result := make(map[ActionName][]RuneSide)
+
+	for _, action := range hero.Actions {
+		result[action] = Actions[action].Price
+	}
+
+	return result
+}

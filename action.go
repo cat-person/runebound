@@ -4,7 +4,7 @@ import "encoding/json"
 
 type ActionName string
 
-type Actions []ActionName
+// type Actions []ActionName
 
 // Standard
 const (
@@ -37,6 +37,8 @@ type Action struct {
 	name   string
 	params map[string]string
 }
+
+var Actions = map[ActionName]ActionDescriptor{}
 
 // ??????
 func (actionDescription ActionDescriptor) String() string {
