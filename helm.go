@@ -7,7 +7,7 @@ type HelmEq struct {
 var Norman Equipment = Equipment{
 	Name:    "Norman",
 	Type:    Helm,
-	Stats:   map[StatName]int{Health: 1, Arm: 1},
+	Stats:   map[StatName]int{},
 	Runes:   []RuneName{},
 	Actions: []ActionName{},
 }

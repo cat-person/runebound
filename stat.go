@@ -3,7 +3,7 @@ package main
 type StatName string
 
 const (
-	Health     StatName = "Health"
+	MaxWound   StatName = "MaxWound"
 	Arm        StatName = "Armour"
 	Initiative StatName = "Initiative"
 )

@@ -9,6 +9,12 @@ const (
 	Book   EquipmentType = "Book"
 )
 
+type EquipmentName string
+
+const (
+	NormanHelm EquipmentName = "NormanHelm"
+)
+
 type Equipment struct {
 	Name    string
 	Type    EquipmentType

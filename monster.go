@@ -1,5 +1,11 @@
 package main
 
+type MonsterName string
+
+const (
+	Werewolf MonsterName = "Werewolf"
+)
+
 type Monster struct {
 	Stats   map[string]int
 	Actions []ActionName
