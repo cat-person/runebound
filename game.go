@@ -10,17 +10,6 @@ type Game struct {
 	Hero          Hero
 }
 
-type Deck[T any] struct {
-	cards []T
-}
-
-func (deck Deck[T]) Draw() T {
-	lastIdx := len(deck.cards) - 1
-	card := deck.cards[lastIdx]
-	deck.cards = deck.cards[:lastIdx]
-	return card
-}
-
 var game = Game{
 	MonsterDeck:   Deck[MonsterName]{},
 	EquipmentDeck: Deck[EquipmentName]{},

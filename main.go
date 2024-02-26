@@ -4,7 +4,7 @@ import "fmt"
 
 // Hello returns a greeting for the named person.
 func main() {
-	fight(getHero("Bob"))
+	fmt.Println(game)
 }
 
 func fight(hero Hero) {

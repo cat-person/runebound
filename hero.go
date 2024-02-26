@@ -12,7 +12,7 @@ type Hero struct {
 	Equipement map[EquipmentType]Equipment
 }
 
-func getHero(name string) Hero {
+func getHero(name string, ancestry Ancestry) Hero {
 	return Hero{
 		Name:       name,
 		Stats:      map[string]int{"health": 5, "armor": 1},
