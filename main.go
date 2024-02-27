@@ -2,9 +2,12 @@ package main
 
 import "fmt"
 
-// Hello returns a greeting for the named person.
 func main() {
-	fmt.Println(game)
+	hero := Hero{}
+	ancestryName := ChooseAncestry([]AncestryName{Elf, Dwarf, Human, Dragonborn}, Ancestries)
+	fmt.Printf("You have chosen %s ancestry\n", ancestryName)
+	hero.Ancestry = ancestryName
+
 }
 
 func fight(hero Hero) {
@@ -14,4 +17,8 @@ func fight(hero Hero) {
 
 	// monsteRunes := monster.castRunes()
 	// fmt.Println(monsteRunes)
+}
+
+func levelUp() {
+
 }

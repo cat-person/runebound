@@ -6,9 +6,12 @@ import (
 
 type Hero struct {
 	Name       string
+	Level      int
 	Stats      map[string]int
 	Actions    []ActionName
 	Runes      []RuneName
+	Fits       []Fit
+	Ancestry   AncestryName
 	Equipement map[EquipmentType]Equipment
 }
 
@@ -31,12 +34,16 @@ func (hero Hero) String() string {
 	}
 }
 
-func (hero Hero) getActions() map[ActionName][]RuneSide {
-	result := make(map[ActionName][]RuneSide)
+// func (hero Hero) getActions() map[ActionName][]RuneSide {
+// 	result := make(map[ActionName][]RuneSide)
 
-	for _, action := range hero.Actions {
-		result[action] = Actions[action].Price
-	}
+// 	for _, action := range hero.Actions {
+// 		result[action] = Actions[action].Price
+// 	}
 
-	return result
+// 	return result
+// }
+
+func (hero *Hero) levelUp() {
+
 }
