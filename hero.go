@@ -7,22 +7,35 @@ import (
 type Hero struct {
 	Name       string
 	Level      int
-	Stats      map[string]int
-	Actions    []ActionName
-	Runes      []RuneName
-	Fits       []Fit
-	Ancestry   AncestryName
-	Equipement map[EquipmentType]Equipment
+	Fits       []FitName
+	Ancestry   []AncestryName
+	Profession []ProfessionName
 }
 
-func getHero(name string, ancestry Ancestry) Hero {
-	return Hero{
-		Name:       name,
-		Stats:      map[string]int{"health": 5, "armor": 1},
-		Actions:    []ActionName{Punch},
-		Runes:      Runes{Copper, Red, Green},
-		Equipement: map[EquipmentType]Equipment{},
+func (hero *Hero) getStats() map[StatName]int {
+	result := ZeroStats()
+	for _, ancestryName := range hero.Ancestry {
+		ancestry := Ancestries[ancestryName]
+		for statName, statValue := range ancestry.StatChange {
+			result[statName] += statValue
+		}
 	}
+
+	for _, professionName := range hero.Profession {
+		profession := Professions[professionName]
+		for statName, statValue := range profession.StatChange {
+			result[statName] += statValue
+		}
+	}
+
+	for _, fitName := range hero.Fits {
+		fit := Fits[fitName]
+		for statName, statValue := range fit.StatChange {
+			result[statName] += statValue
+		}
+	}
+
+	return result
 }
 
 func (hero Hero) String() string {
