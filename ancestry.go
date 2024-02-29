@@ -50,7 +50,7 @@ var Ancestries map[AncestryName]Ancestry = map[AncestryName]Ancestry{
 	Mulan:     {"Brutal warriors", map[StatName]int{Strength: 2, Willpower: 1, Vitality: 1}, []AncestryName{}},
 	Rashemi:   {"Magic aligned humans", map[StatName]int{Willpower: 1, Wisdom: 3}, []AncestryName{}},
 
-	Dragonkin:       {"Dragons, you like dragons right?", map[StatName]int{Strength: 3, Willpower: 3, Vitality: 2}, []AncestryName{Calishite, Mulan, Rashemi}},
+	Dragonkin:       {"Dragons, you like dragons right?", map[StatName]int{Strength: 3, Willpower: 3, Vitality: 2}, []AncestryName{BronzeDragonkin, BlackDragonkin, RedDragonkin}},
 	BronzeDragonkin: {"Dragonkin with more defence / atack", map[StatName]int{Willpower: 2, Vitality: 2}, []AncestryName{}},
 	BlackDragonkin:  {"Evil sneaky magical Dragonkin", map[StatName]int{Strength: 2, Intelligence: 2}, []AncestryName{}},
 	RedDragonkin:    {"Evil fighty magical Dragonkin", map[StatName]int{Strength: 1, Wisdom: 2, Charisma: 1}, []AncestryName{}},
