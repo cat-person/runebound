@@ -110,37 +110,6 @@ professionChoice:
 	return result
 }
 
-func levelUp(heroPtr *Hero, professions map[ProfessionName]Profession, ancestries map[AncestryName]Ancestry) {
-	// Hero level should be increased by 1
-	// On level 3 choose second profession
-	// On level 5 choose advanced ancestry
-	// On every other level up add fit from the table of fits
-	// On level 10 print "You won"
-	heroPtr.Level += 1
-
-	switch heroPtr.Level {
-	case 1, 2, 4, 6:
-		heroPtr.Fits = append(heroPtr.Fits, ChooseFit([]FitName{Mountain, Stoic, SpiritBound, Scholar, SilverTongue, IronGuts}, Fits))
-	case 3:
-		professionNames := make([]ProfessionName, len(professions))
-		professionNameIdx := 0
-		for professionName := range professions {
-			professionNames[professionNameIdx] = professionName
-			professionNameIdx++
-		}
-		heroPtr.Profession = append(heroPtr.Profession, ChooseProfession(professionNames, professions))
-	case 5:
-		heroAncestryName := heroPtr.Ancestry[0]
-		heroAncestry := ancestries[heroAncestryName]
-		heroPtr.Ancestry = append(heroPtr.Ancestry, ChooseAncestry(heroAncestry.Progression, ancestries))
-	case 7, 8, 9:
-		heroPtr.Fits = append(heroPtr.Fits, ChooseFit([]FitName{Bully, Prude, Elder, Bookworm, Sensualist, Bear}, Fits))
-	default:
-		fmt.Println("You won !")
-		return
-	}
-}
-
 func ChooseFit(choices []FitName, fits map[FitName]Fit) FitName {
 	fmt.Println("You have Leveled Up !")
 
@@ -176,4 +145,12 @@ fitChoice:
 
 	fmt.Printf("You have chosen %s fit\n", result)
 	return result
+}
+
+func levelUp(heroPtr *Hero, professions map[ProfessionName]Profession, ancestries map[AncestryName]Ancestry) {
+	// Hero level should be increased by 1
+	// On level 3 choose second profession
+	// On level 5 choose advanced ancestry
+	// On every other level up add fit from the table of fits
+	// On level 10 print "You won"
 }
