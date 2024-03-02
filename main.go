@@ -6,16 +6,22 @@ import (
 )
 
 func main() {
+	game := Game{
+		Deck[AncestryName]{[]AncestryName{Elf, Dwarf, Human, Dragonkin}},
+		Deck[ProfessionName]{[]ProfessionName{Blacksmith, Herbalist, Fighter, Criminal}},
+		Deck[FitName]{},
+	}
+
 	hero := Hero{}
 
 	heroName := ChooseHeroName()
 	fmt.Printf("You have chosen %s ancestry\n", heroName)
 	hero.Name = heroName
 
-	ancestryName := ChooseAncestry([]AncestryName{Elf, Dwarf, Human, Dragonkin}, Ancestries)
+	ancestryName := ChooseAncestry(game.AncestryDeck, Ancestries)
 	hero.Ancestry = append(hero.Ancestry, ancestryName)
 
-	professionName := ChooseProfession([]ProfessionName{Blacksmith, Herbalist, Fighter, Criminal}, Professions)
+	professionName := ChooseProfession(game.ProfessionDeck, Professions)
 	hero.Profession = append(hero.Profession, professionName)
 
 	fmt.Println()
@@ -38,10 +44,10 @@ func ChooseHeroName() string {
 	return name
 }
 
-func ChooseAncestry(choices []AncestryName, ancestries map[AncestryName]Ancestry) AncestryName {
+func ChooseAncestry(deck Deck[AncestryName], ancestries map[AncestryName]Ancestry) AncestryName {
 	fmt.Println("What is your ancestry?")
 
-	for ancestryIdx, ancestryName := range choices {
+	for ancestryIdx, ancestryName := range deck.cards {
 		ancestry := ancestries[ancestryName]
 		fmt.Printf("%d. %s: %s\n", ancestryIdx+1, ancestryName, ancestry.Description)
 	}
@@ -54,31 +60,30 @@ ancestryChoice:
 		var command string
 		fmt.Scan(&command)
 		if ancestryIdx, err := strconv.Atoi(command); err == nil {
-			if 0 < ancestryIdx && ancestryIdx <= len(choices) {
-				result = choices[ancestryIdx-1]
+			if 0 < ancestryIdx && ancestryIdx <= len(deck.cards) {
+				result = deck.cards[ancestryIdx-1]
 				break ancestryChoice
 			} else {
-				fmt.Printf("Please choose option by number between 1 and %d\n", len(choices))
+				fmt.Printf("Please choose option by number between 1 and %d\n", len(deck.cards))
 			}
 		} else {
-			for _, ancestryName := range choices {
+			for _, ancestryName := range deck.cards {
 				if command == fmt.Sprint(ancestryName) {
 					result = ancestryName
-
 					return ancestryName
 				}
 			}
-			fmt.Printf("Please choose one of the ancestries %v\n", choices)
+			fmt.Printf("Please choose one of the ancestries %v\n", deck.cards)
 		}
 	}
 	fmt.Printf("You have chosen %s ancestry\n", result)
 	return result
 }
 
-func ChooseProfession(choices []ProfessionName, ancestries map[ProfessionName]Profession) ProfessionName {
+func ChooseProfession(deck Deck[ProfessionName], ancestries map[ProfessionName]Profession) ProfessionName {
 	fmt.Println("What is your profession?")
 
-	for ancestryIdx, ancestryName := range choices {
+	for ancestryIdx, ancestryName := range deck.cards {
 		ancestry := ancestries[ancestryName]
 		fmt.Printf("%d. %s: %s\n", ancestryIdx+1, ancestryName, ancestry.Description)
 	}
@@ -91,29 +96,29 @@ professionChoice:
 		var command string
 		fmt.Scan(&command)
 		if professionNameIdx, err := strconv.Atoi(command); err == nil {
-			if 0 < professionNameIdx && professionNameIdx <= len(choices) {
-				result = choices[professionNameIdx-1]
+			if 0 < professionNameIdx && professionNameIdx <= len(deck.cards) {
+				result = deck.cards[professionNameIdx-1]
 				break professionChoice
 			}
-			fmt.Printf("Please choose option by number between 1 and %d\n", len(choices))
+			fmt.Printf("Please choose option by number between 1 and %d\n", len(deck.cards))
 		} else {
-			for _, professionName := range choices {
+			for _, professionName := range deck.cards {
 				if command == fmt.Sprint(professionName) {
 					result = professionName
 					break professionChoice
 				}
 			}
-			fmt.Printf("Please choose one of the profession %v\n", choices)
+			fmt.Printf("Please choose one of the profession %v\n", deck.cards)
 		}
 	}
 	fmt.Printf("You have chosen %s profession\n", result)
 	return result
 }
 
-func ChooseFit(choices []FitName, fits map[FitName]Fit) FitName {
+func ChooseFit(deck Deck[FitName], fits map[FitName]Fit) FitName {
 	fmt.Println("You have Leveled Up !")
 
-	for fitIdx, fitName := range choices {
+	for fitIdx, fitName := range deck.cards {
 		fit := fits[fitName]
 		fmt.Printf("%d. %s: %v\n", fitIdx+1, fitName, fit.StatChange)
 	}
@@ -127,19 +132,19 @@ fitChoice:
 		var command string
 		fmt.Scan(&command)
 		if fitIdx, err := strconv.Atoi(command); err == nil {
-			if 0 < fitIdx && fitIdx <= len(choices) {
-				result = choices[fitIdx-1]
+			if 0 < fitIdx && fitIdx <= len(deck.cards) {
+				result = deck.cards[fitIdx-1]
 				break fitChoice
 			}
-			fmt.Printf("Please choose option by number between 1 and %d\n", len(choices))
+			fmt.Printf("Please choose option by number between 1 and %d\n", len(deck.cards))
 		} else {
-			for _, fitName := range choices {
+			for _, fitName := range deck.cards {
 				if command == fmt.Sprint(fitName) {
 					result = fitName
 					break fitChoice
 				}
 			}
-			fmt.Printf("Please choose one of the following fits %v\n", choices)
+			fmt.Printf("Please choose one of the following fits %v\n", deck.cards)
 		}
 	}
 
