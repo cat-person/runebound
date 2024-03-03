@@ -15,14 +15,14 @@ type Hero struct {
 func (hero *Hero) getStats() map[StatName]int {
 	result := ZeroStats()
 	for _, ancestryName := range hero.Ancestry {
-		ancestry := Ancestries[ancestryName]
+		ancestry := getAncestryByCode(ancestryName)
 		for statName, statValue := range ancestry.StatChange {
 			result[statName] += statValue
 		}
 	}
 
 	for _, professionName := range hero.Profession {
-		profession := Professions[professionName]
+		profession := getProfessonByCode(professionName)
 		for statName, statValue := range profession.StatChange {
 			result[statName] += statValue
 		}

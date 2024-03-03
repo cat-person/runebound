@@ -34,7 +34,7 @@ const (
 	RedDragonkin    AncestryName = "RedDragonkin"
 )
 
-var Ancestries map[AncestryName]Ancestry = map[AncestryName]Ancestry{
+var ancestries map[AncestryName]Ancestry = map[AncestryName]Ancestry{
 	Elf:    {"Pointy ears, blunt personality", map[StatName]int{Willpower: 2, Wisdom: 3, Intelligence: 1, Charisma: 2}, []AncestryName{Faerun, Sithi, Drow}},
 	Faerun: {"Wild Elf", map[StatName]int{Strength: 2, Vitality: 2}, []AncestryName{}},
 	Sithi:  {"Magic Elf", map[StatName]int{Willpower: 1, Wisdom: 3}, []AncestryName{}},
@@ -60,4 +60,17 @@ type Ancestry struct {
 	Description string
 	StatChange  map[StatName]int
 	Progression []AncestryName
+}
+
+func getAncestryByCode(ancestryName AncestryName) Ancestry {
+	value, keyExist := ancestries[ancestryName]
+
+	if keyExist {
+		return value
+	}
+	return Ancestry{
+		"Not really an ancestry",
+		map[StatName]int{},
+		[]AncestryName{},
+	}
 }
