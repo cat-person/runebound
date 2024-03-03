@@ -9,7 +9,7 @@ func main() {
 	game := Game{
 		AncestryDeck:   Deck[AncestryName]{[]AncestryName{Elf, Dwarf, Human, Dragonkin}},
 		ProfessionDeck: Deck[ProfessionName]{[]ProfessionName{Blacksmith, Herbalist, Fighter, Criminal}},
-		FitDeck:        Deck[FitName]{},
+		FitDeck:        Deck[FitName]{[]FitName{Mountain, Stoic, SpiritBound, Scholar, SilverTongue, IronGuts, Bully, Prude, Elder, Bookworm, Sensualist, Bear}},
 		Discard: struct {
 			AncestryDeck   Deck[AncestryName]
 			ProfessionDeck Deck[ProfessionName]
@@ -31,8 +31,6 @@ func main() {
 	fmt.Printf("Your name is %s\n", heroName)
 	hero.Name = heroName
 
-	fmt.Printf("%v\n", game)
-
 	ancestryChoices, error := game.AncestryDeck.Draw(2)
 	if error == nil {
 		ancestryName, discardedCards := ChooseAncestry(ancestryChoices, ancestries)
@@ -41,7 +39,6 @@ func main() {
 	} else {
 		panic(error.Error())
 	}
-	fmt.Printf("%v\n", game)
 
 	professionChoices, error := game.ProfessionDeck.Draw(2)
 	if error == nil {
@@ -51,7 +48,6 @@ func main() {
 	} else {
 		panic(error.Error())
 	}
-	fmt.Printf("%v\n", game)
 
 	fmt.Println()
 	fmt.Printf("Congratulations you are %s %s now!\n", hero.Ancestry[0], hero.Profession[0])
@@ -62,9 +58,10 @@ func main() {
 		fmt.Println("Press Enter to level up")
 		fmt.Scanln()
 
-		levelUp(&hero, professions, ancestries)
+		hero.levelUp(&game)
 	}
-
+	fmt.Printf("%v\n", hero)
+	fmt.Printf("%v\n", game)
 }
 
 func ChooseHeroName() string {
@@ -152,48 +149,79 @@ professionChoice:
 	return result, append(choices[:resultIdx], choices[resultIdx+1:]...)
 }
 
-func ChooseFit(deck Deck[FitName], fits map[FitName]Fit) FitName {
+func ChooseFit(choices []FitName, fits map[FitName]Fit) (FitName, []FitName) {
 	fmt.Println("You have Leveled Up !")
 
-	for fitIdx, fitName := range deck.cards {
+	for fitIdx, fitName := range choices {
 		fit := fits[fitName]
 		fmt.Printf("%d. %s: %v\n", fitIdx+1, fitName, fit.StatChange)
 	}
 
 	fmt.Println("Choose fit from above")
 
+	var resultIdx int
 	var result FitName
-
 fitChoice:
 	for {
 		var command string
 		fmt.Scan(&command)
 		if fitIdx, err := strconv.Atoi(command); err == nil {
-			if 0 < fitIdx && fitIdx <= len(deck.cards) {
-				result = deck.cards[fitIdx-1]
+			if 0 < fitIdx && fitIdx <= len(choices) {
+				resultIdx = fitIdx - 1
+				result = choices[resultIdx]
 				break fitChoice
 			}
-			fmt.Printf("Please choose option by number between 1 and %d\n", len(deck.cards))
+			fmt.Printf("Please choose option by number between 1 and %d\n", len(choices))
 		} else {
-			for _, fitName := range deck.cards {
+			for fitIdx, fitName := range choices {
 				if command == fmt.Sprint(fitName) {
+					resultIdx = fitIdx
 					result = fitName
 					break fitChoice
 				}
 			}
-			fmt.Printf("Please choose one of the following fits %v\n", deck.cards)
+			fmt.Printf("Please choose one of the following fits %v\n", choices)
 		}
 	}
 
 	fmt.Printf("You have chosen %s fit\n", result)
-	return result
+	return result, append(choices[:resultIdx], choices[resultIdx+1:]...)
 }
 
-func levelUp(heroPtr *Hero, professions map[ProfessionName]Profession, ancestries map[AncestryName]Ancestry) {
-	heroPtr.Level += 1
+func (heroPtr *Hero) levelUp(game *Game) {
 	// Hero level should be increased by 1
 	// On level 3 choose second profession
 	// On level 5 choose advanced ancestry
 	// On every other level up add fit from the table of fits
 	// On level 10 print "You won"
+	heroPtr.Level += 1
+
+	switch heroPtr.Level {
+	case 1, 2, 4, 6, 7, 8, 9:
+		fitChoices, error := game.FitDeck.Draw(2)
+		if error == nil {
+			fitName, discardedCards := ChooseFit(fitChoices, Fits)
+			game.Discard.FitDeck.AddAll(discardedCards)
+			heroPtr.Fits = append(heroPtr.Fits, fitName)
+
+		}
+	case 3:
+		professionChoices, error := game.ProfessionDeck.Draw(2)
+		if error == nil {
+			professionName, discardedCards := ChooseProfession(professionChoices, professions)
+			game.Discard.ProfessionDeck.AddAll(discardedCards)
+			heroPtr.Profession = append(heroPtr.Profession, professionName)
+		} else {
+			panic(error.Error())
+		}
+	case 5:
+		heroAncestryName := heroPtr.Ancestry[0]
+		heroAncestry := ancestries[heroAncestryName]
+		ancestryName, discardedCards := ChooseAncestry(heroAncestry.Progression, ancestries)
+		game.Discard.AncestryDeck.AddAll(discardedCards)
+		heroPtr.Ancestry = append(heroPtr.Ancestry, ancestryName)
+	default:
+		fmt.Println("You won !")
+		return
+	}
 }
