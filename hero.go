@@ -7,7 +7,7 @@ import (
 type Hero struct {
 	Name       string
 	Level      int
-	Fits       []FitName
+	Feats      []FeatName
 	Ancestry   []AncestryName
 	Profession []ProfessionName
 }
@@ -28,9 +28,9 @@ func (hero *Hero) getStats() map[StatName]int {
 		}
 	}
 
-	for _, fitName := range hero.Fits {
-		fit := Fits[fitName]
-		for statName, statValue := range fit.StatChange {
+	for _, featName := range hero.Feats {
+		feat := Feats[featName]
+		for statName, statValue := range feat.StatChange {
 			result[statName] += statValue
 		}
 	}

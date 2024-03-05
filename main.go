@@ -9,21 +9,21 @@ func main() {
 	game := Game{
 		AncestryDeck:   Deck[AncestryName]{[]AncestryName{Elf, Dwarf, Human, Dragonkin}},
 		ProfessionDeck: Deck[ProfessionName]{[]ProfessionName{Blacksmith, Herbalist, Fighter, Criminal}},
-		FitDeck:        Deck[FitName]{[]FitName{Mountain, Stoic, SpiritBound, Scholar, SilverTongue, IronGuts, Bully, Prude, Elder, Bookworm, Sensualist, Bear}},
+		FeatDeck:       Deck[FeatName]{[]FeatName{Mountain, Stoic, SpiritBound, Scholar, SilverTongue, IronGuts, Bully, Prude, Elder, Bookworm, Sensualist, Bear}},
 		Discard: struct {
 			AncestryDeck   Deck[AncestryName]
 			ProfessionDeck Deck[ProfessionName]
-			FitDeck        Deck[FitName]
+			FeatDeck       Deck[FeatName]
 		}{
 			AncestryDeck:   Deck[AncestryName]{[]AncestryName{}},
 			ProfessionDeck: Deck[ProfessionName]{[]ProfessionName{}},
-			FitDeck:        Deck[FitName]{[]FitName{}},
+			FeatDeck:       Deck[FeatName]{[]FeatName{}},
 		},
 	}
 
 	game.AncestryDeck.Shuffle()
 	game.ProfessionDeck.Shuffle()
-	game.FitDeck.Shuffle()
+	game.FeatDeck.Shuffle()
 
 	hero := Hero{}
 
@@ -149,42 +149,42 @@ professionChoice:
 	return result, append(choices[:resultIdx], choices[resultIdx+1:]...)
 }
 
-func ChooseFit(choices []FitName, fits map[FitName]Fit) (FitName, []FitName) {
+func ChooseFeat(choices []FeatName, feats map[FeatName]Feat) (FeatName, []FeatName) {
 	fmt.Println("You have Leveled Up !")
 
-	for fitIdx, fitName := range choices {
-		fit := fits[fitName]
-		fmt.Printf("%d. %s: %v\n", fitIdx+1, fitName, fit.StatChange)
+	for featIdx, featName := range choices {
+		feat := feats[featName]
+		fmt.Printf("%d. %s: %v\n", featIdx+1, featName, feat.StatChange)
 	}
 
-	fmt.Println("Choose fit from above")
+	fmt.Println("Choose feat from above")
 
 	var resultIdx int
-	var result FitName
-fitChoice:
+	var result FeatName
+featChoice:
 	for {
 		var command string
 		fmt.Scan(&command)
-		if fitIdx, err := strconv.Atoi(command); err == nil {
-			if 0 < fitIdx && fitIdx <= len(choices) {
-				resultIdx = fitIdx - 1
+		if featIdx, err := strconv.Atoi(command); err == nil {
+			if 0 < featIdx && featIdx <= len(choices) {
+				resultIdx = featIdx - 1
 				result = choices[resultIdx]
-				break fitChoice
+				break featChoice
 			}
 			fmt.Printf("Please choose option by number between 1 and %d\n", len(choices))
 		} else {
-			for fitIdx, fitName := range choices {
-				if command == fmt.Sprint(fitName) {
-					resultIdx = fitIdx
-					result = fitName
-					break fitChoice
+			for featIdx, featName := range choices {
+				if command == fmt.Sprint(featName) {
+					resultIdx = featIdx
+					result = featName
+					break featChoice
 				}
 			}
-			fmt.Printf("Please choose one of the following fits %v\n", choices)
+			fmt.Printf("Please choose one of the following feats %v\n", choices)
 		}
 	}
 
-	fmt.Printf("You have chosen %s fit\n", result)
+	fmt.Printf("You have chosen %s feat\n", result)
 	return result, append(choices[:resultIdx], choices[resultIdx+1:]...)
 }
 
@@ -192,17 +192,17 @@ func (heroPtr *Hero) levelUp(game *Game) {
 	// Hero level should be increased by 1
 	// On level 3 choose second profession
 	// On level 5 choose advanced ancestry
-	// On every other level up add fit from the table of fits
+	// On every other level up add feat from the table of feats
 	// On level 10 print "You won"
 	heroPtr.Level += 1
 
 	switch heroPtr.Level {
 	case 1, 2, 4, 6, 7, 8, 9:
-		fitChoices, error := game.FitDeck.Draw(2)
+		featChoices, error := game.FeatDeck.Draw(2)
 		if error == nil {
-			fitName, discardedCards := ChooseFit(fitChoices, Fits)
-			game.Discard.FitDeck.AddAll(discardedCards)
-			heroPtr.Fits = append(heroPtr.Fits, fitName)
+			featName, discardedCards := ChooseFeat(featChoices, Feats)
+			game.Discard.FeatDeck.AddAll(discardedCards)
+			heroPtr.Feats = append(heroPtr.Feats, featName)
 
 		}
 	case 3:
