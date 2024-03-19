@@ -8,6 +8,7 @@ const (
 	Herbalist  ProfessionName = "Herbalist"
 	Fighter    ProfessionName = "Fighter"
 	Criminal   ProfessionName = "Criminal"
+	Merchant   ProfessionName = "Merchant"
 )
 
 type Profession struct {
@@ -20,6 +21,7 @@ var professions map[ProfessionName]Profession = map[ProfessionName]Profession{
 	Herbalist:  {"Herbalist knows a thing or two about grass and berries", map[StatName]int{Wisdom: 2, Vitality: 1}},
 	Fighter:    {"There is nobody better in skullcrushing routine than good old fighter", map[StatName]int{Strength: 2, Vitality: 1}},
 	Criminal:   {"You are scum you are horrible being but if that's come with a big paycheck you are totally ok with it", map[StatName]int{Intelligence: 2, Charisma: 1}},
+	Merchant:   {"Rich and shameless", map[StatName]int{Intelligence: 1, Charisma: 2}},
 }
 
 func getProfessonByCode(professionName ProfessionName) Profession {
